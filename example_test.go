@@ -7,31 +7,44 @@ import (
 	"github.com/azr/backoff"
 )
 
-func ExampleExponentialSleepTimesOutput() {
+func ExampleNewExponential_defaultWaitingIntervals() {
 	exp := backoff.NewExponential()
-	exp.MaxInterval = time.Second * 25
 
-	for i := 0; i < 12; i++ {
+	for i := 0; i < 25; i++ {
 		d := exp.GetSleepTime()
-		fmt.Printf("Random duration was %s, interval is %s in [%s , %s]\n",
-			d.String(),
-			exp.Inverval().String(),
-			(exp.Inverval() - time.Duration(exp.RandomizationFactor*float64(exp.Inverval()))).String(),
-			(exp.Inverval() + time.Duration(exp.RandomizationFactor*float64(exp.Inverval()))).String(),
+		fmt.Printf("Random duration was %2.2fs, interval: %2.2fs in [ %2.2fs , %2.2fs ]\n",
+			d.Seconds(),
+			exp.Inverval().Seconds(),
+			(exp.Inverval() - time.Duration(exp.RandomizationFactor*float64(exp.Inverval()))).Seconds(),
+			(exp.Inverval() + time.Duration(exp.RandomizationFactor*float64(exp.Inverval()))).Seconds(),
 		)
 		exp.IncrementCurrentInterval()
+		// exp.BackOff() would have executed time.Sleep(exp.GetSleepTime()) and exp.IncrementCurrentInterval()
 	}
 	// Output:
-	// Random duration was 507.606314ms, interval is 500ms in [250ms , 750ms]
-	// Random duration was 985.229971ms, interval is 750ms in [375ms , 1.125s]
-	// Random duration was 803.546856ms, interval is 1.125s in [562.5ms , 1.6875s]
-	// Random duration was 1.486109007s, interval is 1.6875s in [843.75ms , 2.53125s]
-	// Random duration was 2.070709754s, interval is 2.53125s in [1.265625s , 3.796875s]
-	// Random duration was 3.67875363s, interval is 3.796875s in [1.8984375s , 5.6953125s]
-	// Random duration was 4.459624189s, interval is 5.6953125s in [2.84765625s , 8.54296875s]
-	// Random duration was 6.775444383s, interval is 8.54296875s in [4.271484375s , 12.814453125s]
-	// Random duration was 15.10932531s, interval is 12.814453125s in [6.407226563s , 19.221679687s]
-	// Random duration was 13.811796615s, interval is 19.221679687s in [9.610839844s , 28.83251953s]
-	// Random duration was 17.579671916s, interval is 25s in [12.5s , 37.5s]
-	// Random duration was 21.521785421s, interval is 25s in [12.5s , 37.5s]
+	// Random duration was 0.51s, interval: 0.50s in [ 0.25s , 0.75s ]
+	// Random duration was 0.99s, interval: 0.75s in [ 0.38s , 1.12s ]
+	// Random duration was 0.80s, interval: 1.12s in [ 0.56s , 1.69s ]
+	// Random duration was 1.49s, interval: 1.69s in [ 0.84s , 2.53s ]
+	// Random duration was 2.07s, interval: 2.53s in [ 1.27s , 3.80s ]
+	// Random duration was 3.68s, interval: 3.80s in [ 1.90s , 5.70s ]
+	// Random duration was 4.46s, interval: 5.70s in [ 2.85s , 8.54s ]
+	// Random duration was 6.78s, interval: 8.54s in [ 4.27s , 12.81s ]
+	// Random duration was 15.11s, interval: 12.81s in [ 6.41s , 19.22s ]
+	// Random duration was 13.81s, interval: 19.22s in [ 9.61s , 28.83s ]
+	// Random duration was 20.27s, interval: 28.83s in [ 14.42s , 43.25s ]
+	// Random duration was 37.23s, interval: 43.25s in [ 21.62s , 64.87s ]
+	// Random duration was 64.24s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 81.75s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 47.59s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 47.82s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 75.15s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 42.39s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 81.92s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 71.80s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 61.43s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 31.70s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 39.50s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 66.44s, interval: 60.00s in [ 30.00s , 90.00s ]
+	// Random duration was 88.51s, interval: 60.00s in [ 30.00s , 90.00s ]
 }
