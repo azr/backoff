@@ -6,17 +6,16 @@ import (
 )
 
 /*
-ExponentialBackOff is an implementation of BackOff that increases the back off
-period for each retry attempt using a randomization function that grows exponentially.
-
-NextBackOff() is calculated using the following formula:
-
-	randomized_interval =
-	    retry_interval * (random value in range [1 - randomization_factor, 1 + randomization_factor])
-
-In other words NextBackOff() will range between the randomization factor
-percentage below and above the retry interval. For example, using 2 seconds as the base retry
-interval and 0.5 as the randomization factor, the actual back off period used in the next retry
+ExponentialBackOff is an implementation of BackOff that backf of and increases
+it's the back off period for each retry attempt using a randomization function
+that grows exponentially.
+Backoff() time is calculated using the following formula:
+    randomized_interval =
+        retry_interval * (random value in range [1 - randomization_factor, 1 + randomization_factor])
+In other words BackOff() will sleep for times between the randomization factor
+percentage below and above the retry interval.
+For example, using 2 seconds as the base retry interval and 0.5 as the
+randomization factor, the actual back off period used in the next retry
 attempt will be between 1 and 3 seconds.
 
 Note: max_interval caps the retry_interval and not the randomized_interval.
