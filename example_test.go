@@ -7,7 +7,7 @@ import (
 	"github.com/azr/backoff"
 )
 
-func ExampleNewExponential() {
+func ExampleExponentialSleepTimesOutput() {
 	exp := backoff.NewExponential()
 	exp.MaxInterval = time.Second * 25
 
