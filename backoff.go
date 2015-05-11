@@ -41,8 +41,13 @@ type ConstantBackOff struct {
 	Interval time.Duration
 }
 
-func (b *ConstantBackOff) Reset()                     {}
-func (b *ConstantBackOff) NextBackOff() time.Duration { return b.Interval }
+var _ BackOffer = (*ConstantBackOff)(nil)
+
+func (b *ConstantBackOff) Reset() {}
+
+func (b *ConstantBackOff) BackOff() {
+	time.Sleep(b.Interval)
+}
 
 func NewConstantBackOff(d time.Duration) *ConstantBackOff {
 	return &ConstantBackOff{Interval: d}
