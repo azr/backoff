@@ -31,10 +31,11 @@ func TestBackOff(t *testing.T) {
 		// Assert that the next back off falls in the expected range.
 		var minInterval = expected - time.Duration(testRandomizationFactor*float64(expected))
 		var maxInterval = expected + time.Duration(testRandomizationFactor*float64(expected))
-		var actualInterval = exp.NextBackOff()
+		var actualInterval = exp.GetSleepTime()
 		if !(minInterval <= actualInterval && actualInterval <= maxInterval) {
 			t.Error("error")
 		}
+		exp.IncrementCurrentInterval()
 	}
 }
 
@@ -74,7 +75,7 @@ func TestBackOffOverflow(t *testing.T) {
 	exp.MaxInterval = testMaxInterval
 	exp.Reset()
 
-	exp.NextBackOff()
+	exp.IncrementCurrentInterval()
 	// Assert that when an overflow is possible the current varerval   time.Duration    is set to the max varerval   time.Duration   .
 	assertEquals(t, testMaxInterval, exp.currentInterval)
 }
