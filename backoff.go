@@ -31,12 +31,11 @@ const Stop time.Duration = -1
 // meaning that the operation is retried immediately without waiting.
 type ZeroBackOff struct{}
 
+var _ BackOffer = (*ZeroBackOff)(nil)
+
 func (b *ZeroBackOff) Reset() {}
 
-func (b *ZeroBackOff) NextBackOff() time.Duration { return 0 }
-
-
-
+func (b *ZeroBackOff) BackOff() {}
 
 type ConstantBackOff struct {
 	Interval time.Duration
