@@ -85,19 +85,3 @@ func assertEquals(t *testing.T, expected, value time.Duration) {
 		t.Errorf("got: %d, expected: %d", value, expected)
 	}
 }
-
-func ExampleExpBackOffTimes(t *testing.T) {
-	exp := NewExponentialBackOff()
-	exp.MaxInterval = time.Second * 25
-
-	for i := 0; i < 12; i++ {
-		d := exp.GetSleepTime()
-		t.Logf("Random duration was %s, interval is %s in [%s , %s]",
-			d.String(),
-			exp.currentInterval.String(),
-			(exp.currentInterval - time.Duration(exp.RandomizationFactor*float64(exp.currentInterval))).String(),
-			(exp.currentInterval + time.Duration(exp.RandomizationFactor*float64(exp.currentInterval))).String(),
-		)
-		exp.IncrementCurrentInterval()
-	}
-}
