@@ -20,13 +20,9 @@ attempt will be between 1 and 3 seconds.
 
 Note: max_interval caps the retry_interval and not the randomized_interval.
 
-If the time elapsed since an ExponentialBackOff instance is created goes past the
-max_elapsed_time then the method NextBackOff() starts returning backoff.Stop.
-The elapsed time can be reset by calling Reset().
-
-Example: The default retry_interval is .5 seconds, default randomization_factor is 0.5, default
-multiplier is 1.5 and the default max_interval is 1 minute. For 10 tries the sequence will be
-(values in seconds) and assuming we go over the max_elapsed_time on the 10th try:
+Example: The default retry_interval is .5 seconds, default randomization_factor
+is 0.5, default multiplier is 1.5 and the max_interval is set to 25 seconds.
+For 12 tries the sequence will sleep (values in seconds) (output from ExampleExpBackOffTimes) :
 
     request#     retry_interval     randomized_interval
 
@@ -39,7 +35,9 @@ multiplier is 1.5 and the default max_interval is 1 minute. For 10 tries the seq
     7             5.692              [2.846,  8.538]
     8             8.538              [4.269, 12.807]
     9            12.807              [6.403, 19.210]
-    10           19.210              backoff.Stop
+    10           19.22               [9.611, 28.833]
+    11           25                  [12.5,  37.5]
+    12           25                  [12.5,  37.5]
 Implementation is not thread-safe.
 */
 type ExponentialBackOff struct {
