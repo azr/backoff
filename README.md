@@ -1,9 +1,9 @@
 # backoff
 
-[![GoDoc](https://godoc.org/github.com/cenkalti/backoff?status.png)](https://godoc.org/github.com/cenkalti/backoff)
-[![Build Status](https://travis-ci.org/cenkalti/backoff.png)](https://travis-ci.org/cenkalti/backoff)
+[![GoDoc](https://godoc.org/github.com/azr/backoff?status.png)](https://godoc.org/github.com/azr/backoff)
+[![Build Status](https://travis-ci.org/azr/backoff.png)](https://travis-ci.org/azr/backoff)
 
-This is a Go port of the exponential backoff algorithm from
+This is a fork from [cenkalti/backoff](github.com/cenkalti/backoff)
 [google-http-java-client](https://code.google.com/p/google-http-java-client/wiki/ExponentialBackoff).
 
 [Exponential backoff](http://en.wikipedia.org/wiki/Exponential_backoff)
@@ -13,11 +13,10 @@ The retries exponentially increase and stop increasing when a certain threshold 
 
 
 
-
 ## Install
 
 ```bash
-go get github.com/cenkalti/backoff
+go get github.com/azr/backoff
 ```
 
 ## Example
