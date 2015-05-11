@@ -14,7 +14,7 @@ func TestBackOff(t *testing.T) {
 		testMaxInterval         = 5 * time.Second
 	)
 
-	exp := NewExponentialBackOff()
+	exp := NewExponential()
 	exp.InitialInterval = testInitialInterval
 	exp.RandomizationFactor = testRandomizationFactor
 	exp.Multiplier = testMultiplier
@@ -69,7 +69,7 @@ func TestBackOffOverflow(t *testing.T) {
 		testMultiplier      float64       = 2.1
 	)
 
-	exp := NewExponentialBackOff()
+	exp := NewExponential()
 	exp.InitialInterval = testInitialInterval
 	exp.Multiplier = testMultiplier
 	exp.MaxInterval = testMaxInterval

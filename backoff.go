@@ -46,6 +46,6 @@ func (b *ConstantBackOff) BackOff() {
 	time.Sleep(b.Interval)
 }
 
-func NewConstantBackOff(d time.Duration) *ConstantBackOff {
+func NewConstant(d time.Duration) *ConstantBackOff {
 	return &ConstantBackOff{Interval: d}
 }

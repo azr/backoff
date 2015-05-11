@@ -57,8 +57,8 @@ const (
 	DefaultMaxInterval         = 60 * time.Second
 )
 
-// NewExponentialBackOff creates an instance of ExponentialBackOff using default values.
-func NewExponentialBackOff() *ExponentialBackOff {
+// NewExponential creates an instance of ExponentialBackOff using default values.
+func NewExponential() *ExponentialBackOff {
 	b := &ExponentialBackOff{
 		InitialInterval:     DefaultInitialInterval,
 		RandomizationFactor: DefaultRandomizationFactor,
@@ -93,6 +93,10 @@ func (b *ExponentialBackOff) IncrementCurrentInterval() {
 	} else {
 		b.currentInterval = time.Duration(float64(b.currentInterval) * b.Multiplier)
 	}
+}
+
+func (b *ExponentialBackOff) Inverval() time.Duration {
+	return b.currentInterval
 }
 
 // Returns a random value from the interval:

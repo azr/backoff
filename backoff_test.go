@@ -11,7 +11,7 @@ func TestNextBackOffMillis(t *testing.T) {
 }
 
 func TestConstantBackOff(t *testing.T) {
-	backoff := NewConstantBackOff(time.Second)
+	backoff := NewConstant(time.Second)
 	if backoff.Interval != time.Second {
 		t.Error("invalid interval")
 	}
