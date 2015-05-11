@@ -1,25 +1,24 @@
-// Package backoff implements backoff algorithms for retrying operations.
+//Package backoff helps you at backing off !
 //
-// Also has a Retry() helper for retrying operations that may fail.
+//It was forked from github.com/cenkalti/backoff which is very awesome.
+//
+//I wanted a BackOff that'd just sleep and do nothing else.
 package backoff
 
 import "time"
 
-// Back-off policy when retrying an operation.
-type BackOff interface {
-	// Gets the duration to wait before retrying the operation or
-	// backoff.Stop to indicate that no retries should be made.
-	//
+// BackOffer interface to use after a retryable operation failed.
+// A Backoffer.BackOff sleeps.
+type BackOffer interface {
 	// Example usage:
 	//
-	// 	duration := backoff.NextBackOff();
-	// 	if (duration == backoff.Stop) {
-	// 		// do not retry operation
-	// 	} else {
-	// 		// sleep for duration and retry operation
-	// 	}
-	//
-	NextBackOff() time.Duration
+	//   for ;; {
+	//       err, canRetry := somethingThatCanFail()
+	//       if err != nil && canRetry {
+	//           backoffer.Backoff()
+	//       }
+	//   }
+	BackOff()
 
 	// Reset to initial state.
 	Reset()
