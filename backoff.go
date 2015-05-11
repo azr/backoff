@@ -35,13 +35,8 @@ func (b *ZeroBackOff) Reset() {}
 
 func (b *ZeroBackOff) NextBackOff() time.Duration { return 0 }
 
-// StopBackOff is a fixed back-off policy that always returns backoff.Stop for
-// NextBackOff(), meaning that the operation should not be retried.
-type StopBackOff struct{}
 
-func (b *StopBackOff) Reset() {}
 
-func (b *StopBackOff) NextBackOff() time.Duration { return Stop }
 
 type ConstantBackOff struct {
 	Interval time.Duration
