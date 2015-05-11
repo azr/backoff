@@ -43,22 +43,12 @@ multiplier is 1.5 and the default max_interval is 1 minute. For 10 tries the seq
 Implementation is not thread-safe.
 */
 type ExponentialBackOff struct {
-	InitialInterval     time.Duration
+	InitialInterval time.Duration
+	currentInterval time.Duration
+	MaxInterval     time.Duration
+
 	RandomizationFactor float64
 	Multiplier          float64
-	MaxInterval         time.Duration
-	// After MaxElapsedTime the ExponentialBackOff stops.
-	// It never stops if MaxElapsedTime == 0.
-	MaxElapsedTime time.Duration
-	Clock          Clock
-
-	currentInterval time.Duration
-	startTime       time.Time
-}
-
-// Clock is an interface that returns current time for BackOff.
-type Clock interface {
-	Now() time.Time
 }
 
 // Default values for ExponentialBackOff.
@@ -67,7 +57,6 @@ const (
 	DefaultRandomizationFactor = 0.5
 	DefaultMultiplier          = 1.5
 	DefaultMaxInterval         = 60 * time.Second
-	DefaultMaxElapsedTime      = 15 * time.Minute
 )
 
 // NewExponentialBackOff creates an instance of ExponentialBackOff using default values.
@@ -77,49 +66,29 @@ func NewExponentialBackOff() *ExponentialBackOff {
 		RandomizationFactor: DefaultRandomizationFactor,
 		Multiplier:          DefaultMultiplier,
 		MaxInterval:         DefaultMaxInterval,
-		MaxElapsedTime:      DefaultMaxElapsedTime,
-		Clock:               SystemClock,
+		currentInterval:     DefaultInitialInterval,
 	}
 	b.Reset()
 	return b
 }
 
-type systemClock struct{}
-
-func (t systemClock) Now() time.Time {
-	return time.Now()
-}
-
-// SystemClock implements Clock interface that uses time.Now().
-var SystemClock = systemClock{}
-
 // Reset the interval back to the initial retry interval and restarts the timer.
 func (b *ExponentialBackOff) Reset() {
 	b.currentInterval = b.InitialInterval
-	b.startTime = b.Clock.Now()
 }
 
-// NextBackOff calculates the next back off interval using the formula:
-// 	randomized_interval = retry_interval +/- (randomization_factor * retry_interval)
-func (b *ExponentialBackOff) NextBackOff() time.Duration {
-	// Make sure we have not gone over the maximum elapsed time.
-	if b.MaxElapsedTime != 0 && b.GetElapsedTime() > b.MaxElapsedTime {
-		return Stop
-	}
-	defer b.incrementCurrentInterval()
+func (b *ExponentialBackOff) GetSleepTime() time.Duration {
 	return getRandomValueFromInterval(b.RandomizationFactor, rand.Float64(), b.currentInterval)
 }
 
-// GetElapsedTime returns the elapsed time since an ExponentialBackOff instance
-// is created and is reset when Reset() is called.
-//
-// The elapsed time is computed using time.Now().UnixNano().
-func (b *ExponentialBackOff) GetElapsedTime() time.Duration {
-	return b.Clock.Now().Sub(b.startTime)
+func (b *ExponentialBackOff) BackOff() {
+	time.Sleep(b.GetSleepTime())
+
+	b.IncrementCurrentInterval()
 }
 
 // Increments the current interval by multiplying it with the multiplier.
-func (b *ExponentialBackOff) incrementCurrentInterval() {
+func (b *ExponentialBackOff) IncrementCurrentInterval() {
 	// Check for overflow, if overflow is detected set the current interval to the max interval.
 	if float64(b.currentInterval) >= float64(b.MaxInterval)/b.Multiplier {
 		b.currentInterval = b.MaxInterval
@@ -129,7 +98,7 @@ func (b *ExponentialBackOff) incrementCurrentInterval() {
 }
 
 // Returns a random value from the interval:
-// 	[randomizationFactor * currentInterval, randomizationFactor * currentInterval].
+//  [randomizationFactor * currentInterval, randomizationFactor * currentInterval].
 func getRandomValueFromInterval(randomizationFactor, random float64, currentInterval time.Duration) time.Duration {
 	var delta = randomizationFactor * float64(currentInterval)
 	var minInterval = float64(currentInterval) - delta
