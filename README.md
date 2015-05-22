@@ -6,6 +6,8 @@
 This is a fork from [cenkalti/backoff](github.com/cenkalti/backoff) whis is a go port from
 [google-http-java-client](https://code.google.com/p/google-http-java-client/wiki/ExponentialBackoff).
 
+This BackOff sleeps upon BackOff() and calculates its next backoff time instead of returning the duration to sleep.
+
 [Exponential backoff](http://en.wikipedia.org/wiki/Exponential_backoff)
 is an algorithm that uses feedback to multiplicatively decrease the rate of some process,
 in order to gradually find an acceptable rate.

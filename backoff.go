@@ -1,8 +1,8 @@
 //Package backoff helps you at backing off !
 //
-//It was forked from github.com/cenkalti/backoff which is very awesome.
+//It was forked from github.com/cenkalti/backoff which is awesome.
 //
-//I wanted a BackOff that'd just sleep and do nothing else.
+//This BackOff sleeps upon BackOff() and calculates its next backoff time instead of returning the duration to sleep.
 package backoff
 
 import "time"
