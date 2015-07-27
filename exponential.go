@@ -6,8 +6,8 @@ import (
 )
 
 /*
-ExponentialBackOff is an implementation of BackOff that backf of and increases
-it's the back off period for each retry attempt using a randomization function
+ExponentialBackOff is an implementation of BackOff that increases
+it's back off period for each retry attempt using a randomization function
 that grows exponentially.
 Backoff() time is calculated using the following formula:
     randomized_interval =
