@@ -28,4 +28,9 @@ func TestLinear(t *testing.T) {
 		t.Errorf("increment did not work got %s expected %s.", bmultincr.currentInterval, time.Minute*3)
 	}
 
+	bmultincr.Reset()
+
+	if bmultincr.currentInterval != time.Minute {
+		t.Errorf("reset did not work got %s expected %s.", bmultincr.currentInterval, time.Minute)
+	}
 }
