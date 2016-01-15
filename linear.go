@@ -14,7 +14,7 @@ type LinearBackOff struct {
 	currentInterval time.Duration
 }
 
-var _ BackOffer = (*LinearBackOff)(nil)
+var _ Interface = (*LinearBackOff)(nil)
 
 func NewLinear(from, to, incr time.Duration, mult float64) *LinearBackOff {
 	return &LinearBackOff{

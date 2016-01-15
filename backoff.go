@@ -7,9 +7,9 @@ package backoff
 
 import "time"
 
-// BackOffer interface to use after a retryable operation failed.
-// A Backoffer.BackOff sleeps.
-type BackOffer interface {
+// Interface interface to use after a retryable operation failed.
+// A Interface.BackOff sleeps.
+type Interface interface {
 	// Example usage:
 	//
 	//   for ;; {
@@ -28,7 +28,7 @@ type BackOffer interface {
 // meaning that the operation is retried immediately without waiting.
 type ZeroBackOff struct{}
 
-var _ BackOffer = (*ZeroBackOff)(nil)
+var _ Interface = (*ZeroBackOff)(nil)
 
 func (b *ZeroBackOff) Reset() {}
 
@@ -38,7 +38,7 @@ type ConstantBackOff struct {
 	Interval time.Duration
 }
 
-var _ BackOffer = (*ConstantBackOff)(nil)
+var _ Interface = (*ConstantBackOff)(nil)
 
 func (b *ConstantBackOff) Reset() {}
 
